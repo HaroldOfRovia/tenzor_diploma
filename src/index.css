@@ -1,0 +1,277 @@
+* {
+    font-family: 'Barlow';
+    margin: 0;
+    padding: 0;
+}
+
+@font-face {
+	font-family: 'Barlow'; 
+	src: url(fonts/Barlow-Regular.ttf); 
+}
+
+@font-face {
+	font-family: 'Barlow-Bold'; 
+	src: url(fonts/Barlow-Bold.ttf); 
+}
+
+.main {
+    display: flex;
+    flex-direction: column;
+    min-height: 94vh;
+    padding: 0px 15px;
+    color: #222;
+}
+
+.link {
+    text-decoration: none;
+    color: inherit;
+}
+
+.link:hover > img {
+    filter: brightness(90%);
+}
+
+.link:hover > h3 {
+    text-decoration-line: underline;
+    text-decoration-thickness: 2px;
+}
+
+.header {
+    display: flex;
+    width: 100%;
+    height: 60px;
+    background: #000000;
+    justify-content: center;
+}
+
+.header * {
+    display: flex;
+    align-items: center;
+}
+
+.header-right {
+    width: 100%;
+    justify-content: flex-end;
+    padding-right: 15px;
+}
+
+.nav-item {
+    font-size: 14px;
+    color: #fff;
+    margin-left: 15px;
+}
+
+.header-logo {
+    margin-top: -16px;
+    height: 90px;
+    position: absolute;
+}
+
+.search-button {
+    height: 22px;
+}
+
+.main-topic {
+    margin-top: 48px;
+    text-align: center;
+    font-size: 48px;
+}
+
+.bold-font {
+    font-family: "Barlow-Bold";
+}
+
+.user{
+    background-color: #bbbbbb;
+    border-radius: 50%;
+    width: 35px;
+    height: 35px;
+}
+
+.topic {
+    display: block;
+    margin-top: 48px;
+    margin-left: auto;
+    margin-right: auto;
+    width: inherit;
+}
+
+.topic-header {
+    text-align: center;
+    font-size: 18px;
+    font-family: 'Barlow-Bold'; 
+}
+
+.red-line {
+    border: 0.8px solid #b90000;
+    background-color: #b90000;
+    background-size: 55px;
+    margin-top: 15px;
+    width: 48px;
+    justify-content: center;
+}
+
+.center {
+    display: flex;
+    justify-content: center;
+}
+
+.top-singers {
+    display: grid;
+    grid-template-columns: repeat(6, auto);
+    grid-template-rows: repeat(2, auto);
+    gap: 18px;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.singer {
+    width: 150px;
+    display: grid;
+    grid-template-rows: 150px 30px;
+    align-items: center;
+}
+
+.round-singer-ico {
+    border: 1px solid #cecece;
+    width: 100%;
+    border-radius: 50%;
+}
+
+.name {
+    font-family: 'Barlow-Bold'; 
+    font-size: 14px;
+}
+
+.top-tracks {
+    display: grid;
+    grid-template-columns: repeat(3, auto);
+    grid-template-rows: repeat(2, auto);
+    gap: 18px;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.track {
+    display: grid;
+    align-items: center;
+    row-gap: 8px;
+    column-gap: 14px;
+    grid-template-columns: 80px 200px;
+}
+
+.track-ico {
+    border: 1px solid #cecece;
+    grid-row: 1/4;
+    width: 100%;
+}
+
+.footer-text {
+    font-size: 14px;
+    color: #666;
+}
+
+.footer {
+    display: flex;
+    justify-content: center;
+    border-top: 1px solid #3a3a3a;
+    background-color: #111111;
+    margin-top: 48px;
+    padding: 28px 36px;
+    min-height: 6vh;
+}
+
+.search-header {
+    margin-top: 24px;
+    font-size: 30px;
+    padding: 0px 0px 14px 50px;
+    border-bottom: 1px solid #eee;
+}
+
+.search-page {
+    display: flex;
+    flex-direction: column;
+    min-height: 94vh;
+    color: #222;
+}
+
+.search-result {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 70%;
+    margin: 28px 0px 0px 50px;
+}
+
+.input-field {
+    border: 1px solid #eee;
+    border-radius: 3px;
+    font-size: 14px;
+    padding: 6px 12px;
+    color: #222;
+    width: 70%;
+    height: 24px;
+}
+
+.search-topic {
+    margin-top: 24px;
+    font-size: 24px;
+    width: fit-content;
+    font-weight: lighter;
+}
+
+.grid-search-result {
+    margin-top: 28px;
+    text-shadow: 1px 1px 3px black;
+    display: grid;
+    grid-template-columns: repeat(4, 150px);
+    gap: 0px 16px;
+}
+
+.item-result {
+    display: flex;
+    background: linear-gradient(rgba(255, 255, 255, 0) 55%, rgba(0, 0, 0, 0.74)),
+    url('./images/fly.jpg'); 
+    background-size: cover;
+    width: 150px;
+    height: 150px;
+    flex-direction: column-reverse;
+    padding: 8px ;
+}
+
+.tracks {
+    margin-top: 18px;
+}
+
+.track-case {
+    display: grid;
+    grid-template-columns: 56px 2fr 3fr auto;
+    align-items: center;
+    border-bottom: 1px solid #cecece;
+    height: 58px;
+}
+
+.track-case:hover {
+    background-color: #eee;
+}
+
+.mini-track-ico {
+    background: linear-gradient(rgba(255, 255, 255, 0) 55%, rgba(0, 0, 0, 0.74)),
+    url('./images/fly.jpg'); 
+    background-size: cover;
+    width: 38px;
+    height: 38px;
+    margin-left: 18px;
+}
+
+.track-name {
+    margin-left: 18px;
+}
+
+.duration{
+    margin-right: 18px;
+}
+
+.white-text {
+    color: #fff;
+}
