@@ -31,6 +31,7 @@
     filter: brightness(90%);
     text-decoration-line: underline;
     text-decoration-thickness: 2px;
+    z-index: 0;
 }
 
 .header {
@@ -41,6 +42,7 @@
     height: 60px;
     background: #000000;
     justify-content: center;
+    z-index: 1;
 }
 
 .header * {
