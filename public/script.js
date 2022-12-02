@@ -23,6 +23,13 @@ async function buildMainPage(){
                         </div>
                     </div>`;
     header.after(main);
+
+    let searchForm = document.getElementsByClassName('search-field-container')[0];
+    searchForm.onsubmit = function (event) {
+        event.preventDefault();
+        buildSearchPage();
+    }
+
     await insertChart();
     await insertTracks();
     await setChartArtistImages();
@@ -82,7 +89,7 @@ function getTopArtistCard(pic, alt, name){
  */
 async function getChartArtists(size){
     try{
-        let data = await getJson('http://ws.audioscrobbler.com/2.0/?method=chart.gettopartists&api_key=f621a1ddb47cdf58f1be3a218d7a0b27&format=json'),
+        let data = await getJson(`http://ws.audioscrobbler.com/2.0/?method=chart.gettopartists&api_key=f621a1ddb47cdf58f1be3a218d7a0b27&format=json&limit=${size}`),
             chart = [];
         for (let i = 0; i < size; i++){
             chart.push(data.artists.artist[i].name);
@@ -110,9 +117,12 @@ async function insertChart(){
  */
 async function setChartArtistImages(){
     const topSingers = document.getElementsByClassName('singer');
+    let images = [];
     for(let i = 0; i < topSingers.length; i++){
-        let image = await getRandomImage();
-        topSingers[i].getElementsByTagName("img")[0].setAttribute("src", image);
+        images.push(await getRandomImage());
+    }
+    for(let i = 0; i < topSingers.length; i++){
+        topSingers[i].getElementsByTagName("img")[0].setAttribute("src", images[i]);
     }
 }
 
@@ -122,7 +132,7 @@ async function setChartArtistImages(){
  */
 async function getChartTrack(size){
     try{
-        let data = await getJson('http://ws.audioscrobbler.com/2.0/?method=chart.gettoptracks&api_key=f621a1ddb47cdf58f1be3a218d7a0b27&format=json'),
+        let data = await getJson(`http://ws.audioscrobbler.com/2.0/?method=chart.gettoptracks&api_key=f621a1ddb47cdf58f1be3a218d7a0b27&format=json&limit=${size}`),
             chart = [];
         for (let i = 0; i < size; i++){
             chart.push({name: data.tracks.track[i].name, artist: data.tracks.track[i].artist.name});
@@ -167,9 +177,12 @@ async function insertTracks(){
  */
 async function setChartTracksImages(){
     const topTracks = document.getElementsByClassName('track');
+    let images = [];
     for(let i = 0; i < topTracks.length; i++){
-        let image = await getRandomImage();
-        topTracks[i].getElementsByTagName("img")[0].setAttribute("src", image);
+        images.push(await getRandomImage());
+    }
+    for(let i = 0; i < topTracks.length; i++){
+        topTracks[i].getElementsByTagName("img")[0].setAttribute("src", images[i]);
     }
 }
 
@@ -208,7 +221,7 @@ async function buildSearchPage(){
     header.after(searchPage);
     await insertSearchCardArtist();
     await insertSearchCardAlbums();
-    await insertSearchTrack()
+    await insertSearchTrack();
     await insertSearchCardImage();
 }
 
@@ -234,8 +247,8 @@ function getSearchCard(pic, mainText, subText) {
  * @returns массив объектов у которых поля: name - имя исполнителя, listeners - количество слушателей. 
  * Массив содержит в себе 8 (меньше, если не может найти столько) объектов.
  */
-async function findArtist(input){
-    const data = await getJson(`http://ws.audioscrobbler.com/2.0/?method=artist.search&artist=${input}&api_key=f621a1ddb47cdf58f1be3a218d7a0b27&format=json`),
+async function findArtist(input, size = 8){
+    const data = await getJson(`http://ws.audioscrobbler.com/2.0/?method=artist.search&artist=${input}&api_key=f621a1ddb47cdf58f1be3a218d7a0b27&format=json&limit=${size}`),
         list = [];
     if(Object.keys(data).length == 0)
         return [];
@@ -262,9 +275,12 @@ async function insertSearchCardArtist(){
  */
 async function insertSearchCardImage(){
     const cards = document.getElementsByTagName('main')[0].getElementsByTagName('img');
+    let images = [];
     for(let i = 0; i < cards.length; i++) {
-        let image = await getRandomImage(170);
-        cards[i].setAttribute('src', image);
+        images.push(await getRandomImage(170));
+    }
+    for(let i = 0; i < cards.length; i++) {
+        cards[i].setAttribute('src', images[i]);
     }
 }
 
@@ -274,8 +290,8 @@ async function insertSearchCardImage(){
  * @returns массив объектов у которых поля: name - имя альбома, artist - исполнитель. 
  * Массив содержит в себе 8 (меньше, если не может найти столько) объектов.
  */
-async function findAlbum(input){
-    const data = await getJson(`http://ws.audioscrobbler.com/2.0/?method=album.search&album=${input}&api_key=f621a1ddb47cdf58f1be3a218d7a0b27&format=json`),
+async function findAlbum(input, size = 8){
+    const data = await getJson(`http://ws.audioscrobbler.com/2.0/?method=album.search&album=${input}&api_key=f621a1ddb47cdf58f1be3a218d7a0b27&format=json&limit=${size}`),
         list = [];
     if(Object.keys(data).length == 0)
         return [];
@@ -320,8 +336,8 @@ function getTrackCard(pic, name, artist){
  * @returns массив объектов у которых поля: name - имя трека, artist - исполнитель. 
  * Массив содержит в себе 8 (меньше, если не может найти столько) объектов.
  */
-async function findTrack(input){
-    const data = await getJson(`http://ws.audioscrobbler.com/2.0/?method=track.search&track=${input}&api_key=f621a1ddb47cdf58f1be3a218d7a0b27&format=json`)
+async function findTrack(input, size = 8){
+    const data = await getJson(`http://ws.audioscrobbler.com/2.0/?method=track.search&track=${input}&api_key=f621a1ddb47cdf58f1be3a218d7a0b27&format=json&limit=${size}`)
         list = [];
     if(Object.keys(data).length == 0)
         return [];
