@@ -68,8 +68,11 @@ export const TrackSearch = ({input}: SearchInput) => {
     }
 
     useEffect(() => {
-        setTracks();
-        setPic();
+        async function qwe() {
+            await setTracks();
+            await setPic();
+        }
+        qwe();
     }, [input]);
 
     return (

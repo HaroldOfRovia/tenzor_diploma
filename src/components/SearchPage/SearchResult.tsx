@@ -13,7 +13,7 @@ interface SearchResultInterface {
  * @returns ReactElement со списком больших карточек поиска
  */
 export const SearchResult = ({input, func} : SearchResultInterface) => {
-    const propsList: SearchCardValues[] = [];
+    let propsList: SearchCardValues[] = [];
     const [cards, setCards] = useState<ReactElement[]>(initCards());
 
     
@@ -35,7 +35,7 @@ export const SearchResult = ({input, func} : SearchResultInterface) => {
      */
     function updateList(){
         const list = [];
-        for (let i = 0; i < 8; i++) {
+        for (let i = 0; i < propsList.length; i++) {
             list.push(<SearchCard key={i} mainText={propsList[i].mainText} subText={propsList[i].subText}
                 picture={propsList[i].picture} alt={propsList[i].alt}/>);
         }
@@ -47,12 +47,21 @@ export const SearchResult = ({input, func} : SearchResultInterface) => {
      */
     async function setSomething(func: Promise<{name: any, other: any}[]>) {
         const data = await func;
+        let cut = cards.length;
         if (data === undefined)
             return;
         for(let i = 0; i < cards.length; i++){
+            if (data[i] === undefined){
+                cut = i;
+                break;
+            }
             propsList[i].mainText = data[i].name;
-            propsList[i].subText = `${data[i].other} listeners`;
+            if (isNaN(data[i].other[0]))
+                propsList[i].subText = `${data[i].other} listeners`;
+            else
+                propsList[i].subText = `${data[i].other}`;
         }
+        propsList = propsList.splice(0, cut);
         updateList();
     }
 
@@ -60,18 +69,21 @@ export const SearchResult = ({input, func} : SearchResultInterface) => {
      * обновляет пропсы (изображение) для карточек поиска
      */
     async function setPic(){
-        let pictures = await getRandomPictures(12, 200);
+        let pictures = await getRandomPictures(propsList.length, 200);
         if (pictures === undefined)
             return;
-        for(let i = 0; i < cards.length; i++){
+        for(let i = 0; i < propsList.length; i++){
             propsList[i].picture = pictures[i];
         }
         updateList();
     }
 
     useEffect(() => {
-        setSomething(func);
-        setPic();
+        async function qwe() {
+            await setSomething(func);
+            await setPic();
+        }
+        qwe();
     }, [input]);
 
     return (

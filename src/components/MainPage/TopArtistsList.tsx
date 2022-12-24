@@ -61,8 +61,11 @@ export const TopArtists = () => {
     }
 
     useEffect(() => {
-        setArtistsName();
-        setArtistsPic();
+        async function qwe() {
+            await setArtistsName();
+            await setArtistsPic();
+        }
+        qwe();
     }, []);
 
     return(

@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 import { MainPage } from './components/MainPage/MainPage';
 import { SearchPage } from './components/SearchPage/SearchPage';
 import searchButton from './images/searchIco.png'

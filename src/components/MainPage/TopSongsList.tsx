@@ -61,8 +61,11 @@ export const TopSongsList = () => {
     }
 
     useEffect(() => {
-        setSongsName();
-        setSongsPic();
+        async function qwe() {
+            await setSongsName();
+            await setSongsPic();
+        }
+        qwe();
     }, []);
 
     return(
