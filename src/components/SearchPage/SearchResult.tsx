@@ -14,21 +14,8 @@ interface SearchResultInterface {
  */
 export const SearchResult = ({input, func} : SearchResultInterface) => {
     let propsList: SearchCardValues[] = [];
-    const [cards, setCards] = useState<ReactElement[]>(initCards());
+    const [cards, setCards] = useState<ReactElement[]>([]);
 
-    
-    /**
-     * @returns массив с карточками поиска с данными по умолчанию
-     */
-    function initCards():ReactElement[]{
-        const list = [];
-        for(let i = 0; i < 8; i++){
-            propsList.push({mainText: 'Something went wrong', subText: 'error', picture: image, alt: 'error'});
-            list.push(<SearchCard key={i} mainText={propsList[i].mainText} subText={propsList[i].subText}
-                picture={propsList[i].picture} alt={propsList[i].alt}/>)
-        } 
-        return list;
-    }
 
     /**
      * обновляет массив рекат элементов
@@ -47,21 +34,16 @@ export const SearchResult = ({input, func} : SearchResultInterface) => {
      */
     async function setSomething(func: Promise<{name: any, other: any}[]>) {
         const data = await func;
-        let cut = cards.length;
         if (data === undefined)
             return;
-        for(let i = 0; i < cards.length; i++){
-            if (data[i] === undefined){
-                cut = i;
-                break;
-            }
-            propsList[i].mainText = data[i].name;
+        for(let i = 0; i < data.length; i++){
+            let obj = { mainText: data[i].name, subText: '', picture: image, alt: data[i].name };
             if (isNaN(data[i].other[0]))
-                propsList[i].subText = `${data[i].other} listeners`;
+                obj.subText = `${data[i].other}`;
             else
-                propsList[i].subText = `${data[i].other}`;
+                obj.subText = `${data[i].other} listeners`;
+            propsList.push(obj);
         }
-        propsList = propsList.splice(0, cut);
         updateList();
     }
 
