@@ -77,7 +77,7 @@ export async function getRandomPictures(size: number, pixels: number) {
 export async function findArtist(input: string, size = 8){
     const data = await getJson(`http://ws.audioscrobbler.com/2.0/?method=artist.search&artist=${input}&api_key=f621a1ddb47cdf58f1be3a218d7a0b27&format=json&limit=${size}`),
         list = [];
-    if(Object.keys(data).length == 0)
+    if(Object.keys(data).length === 0)
         return [];
     for(let i = 0; i < 8 && i < data.results.artistmatches.artist.length; i++){
         list.push({name: data.results.artistmatches.artist[i].name, other: data.results.artistmatches.artist[i].listeners})
@@ -94,7 +94,7 @@ export async function findArtist(input: string, size = 8){
 export async function findAlbum(input: string, size = 8){
     const data = await getJson(`http://ws.audioscrobbler.com/2.0/?method=album.search&album=${input}&api_key=f621a1ddb47cdf58f1be3a218d7a0b27&format=json&limit=${size}`),
         list = [];
-    if(Object.keys(data).length == 0)
+    if(Object.keys(data).length === 0)
         return [];
     for(let i = 0; i < 8 && i < data.results.albummatches.album.length; i++){
         list.push({name: data.results.albummatches.album[i].name, other: data.results.albummatches.album[i].artist})
@@ -111,7 +111,7 @@ export async function findAlbum(input: string, size = 8){
 export async function findTrack(input: string, size = 8){
     const data = await getJson(`http://ws.audioscrobbler.com/2.0/?method=track.search&track=${input}&api_key=f621a1ddb47cdf58f1be3a218d7a0b27&format=json&limit=${size}`),
         list = [];
-    if(Object.keys(data).length == 0)
+    if(Object.keys(data).length === 0)
         return [];
     for(let i = 0; i < 8 && i < data.results.trackmatches.track.length; i++){
         list.push({name: data.results.trackmatches.track[i].name, artist: data.results.trackmatches.track[i].artist})

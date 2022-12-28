@@ -1,4 +1,3 @@
-import image from '../../images/fly.jpg'
 import { SearchResult } from "./SearchResult"
 import { findArtist, findAlbum  } from '../../collectData';
 import { TrackSearch } from './TrackSeacrh';

@@ -1,69 +1,42 @@
-import { ReactElement, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { TopArtistCard, ArtistCardValues } from './TopArtistCard';
 import { getTopArtists, getRandomPictures } from '../../collectData';
+import image from '../../images/topSinger.jpg'
 
 /**
  * @returns ReactElement со списком карточек лучших исполителей
  */
 export const TopArtists = () => {
-    const propsList: ArtistCardValues[] = [];
-    const [topArtists, setTopArtists] = useState<ReactElement[]>(initArtists());
+    const [topArtists, setTopArtists] = useState<ArtistCardValues[]>([]);
 
-
-    /**
-     * @returns массив с карточками лучших артистов с данными по умолчанию
-     */
-    function initArtists():ReactElement[]{
-        const artists = [];
-        for (let i = 0; i < 12; i++) {
-            propsList.push({name: 'Something went wrong', pic: '../../images/topSinger.jpg', picAlt: 'pic'});
-            artists.push(<TopArtistCard key={i} name={propsList[i].name} pic={propsList[i].pic} picAlt={propsList[i].picAlt}/>);
-        }
-        return artists;
-    }
-
-    /**
-     * обновляет массив рекат элементов
-     */
-    function updateList(){
-        const artists = [];
-        for (let i = 0; i < 12; i++) {
-            artists.push(<TopArtistCard key={i} name={propsList[i].name} pic={propsList[i].pic} picAlt={propsList[i].picAlt}/>);
-        }
-        setTopArtists(artists);
-    }
-
-    /**
-     * обновляет пропсы (имя артиста и alt для изображения) для карточек артистов
-     */
-    async function setArtistsName(){
+    async function setArtistsName() {
         let names = await getTopArtists(12);
+        let arr = [];
         if (names === undefined)
             return;
-        for(let i = 0; i < topArtists.length; i++){
-            propsList[i].name = names[i];
-            propsList[i].picAlt = names[i];
+        for(let i = 0; i < 12; i++){
+            arr.push({key: i, name: names[i], pic: image, picAlt: names[i]});
         }
-        updateList();
+        return arr;
     }
 
-    /**
-     * обновляет пропсы (изображение) для карточек артистов
-     */
-    async function setArtistsPic(){
+    async function setPic(arr: ArtistCardValues[] | undefined) {
         let pictures = await getRandomPictures(12, 150);
-        if (pictures === undefined)
+        if (pictures === undefined || arr === undefined)
             return;
-        for(let i = 0; i < topArtists.length; i++){
-            propsList[i].pic = pictures[i];
+        for(let i = 0; i < 12; i++){
+            arr[i].pic = pictures[i];
         }
-        updateList();
     }
 
     useEffect(() => {
         async function qwe() {
-            await setArtistsName();
-            await setArtistsPic();
+            let arr = await setArtistsName();
+            if(arr !== undefined)
+                setTopArtists(arr);
+            await setPic(arr);
+            if(arr !== undefined)
+                setTopArtists([...arr]);
         }
         qwe();
     }, []);
@@ -74,7 +47,9 @@ export const TopArtists = () => {
             <div className='center'><hr className='red-line'/></div>
             <div className='top-singers'>
             {/* <!-- сюда вставляются топ авторов --> */}
-                { topArtists }
+                { topArtists.map((a) => {
+                    return <TopArtistCard key={a.key} name={a.name} pic={a.pic} picAlt={a.picAlt}/>
+                }) }
             </div>
         </div>
     )

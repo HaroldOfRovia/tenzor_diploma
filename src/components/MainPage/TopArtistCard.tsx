@@ -1,4 +1,5 @@
 export interface ArtistCardValues {
+    key?: number;
     name: string;
     pic: string;
     picAlt: string;

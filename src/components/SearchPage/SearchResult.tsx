@@ -1,5 +1,5 @@
 import image from '../../images/fly.jpg';
-import { ReactElement, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { SearchCard, SearchCardValues } from './SearchCard';
 import { getRandomPictures } from '../../collectData';
 
@@ -13,57 +13,38 @@ interface SearchResultInterface {
  * @returns ReactElement со списком больших карточек поиска
  */
 export const SearchResult = ({input, func} : SearchResultInterface) => {
-    let propsList: SearchCardValues[] = [];
-    const [cards, setCards] = useState<ReactElement[]>([]);
+    const [cards, setCards] = useState<SearchCardValues[]>([]);
 
-
-    /**
-     * обновляет массив рекат элементов
-     */
-    function updateList(){
-        const list = [];
-        for (let i = 0; i < propsList.length; i++) {
-            list.push(<SearchCard key={i} mainText={propsList[i].mainText} subText={propsList[i].subText}
-                picture={propsList[i].picture} alt={propsList[i].alt}/>);
-        }
-        setCards(list);
-    }
-
-    /**
-     * обновляет пропсы (главный текст и второстепенный) для карточек поиска
-     */
-    async function setSomething(func: Promise<{name: any, other: any}[]>) {
-        const data = await func;
+    async function setSomething(func: Promise<{name: any, other: any}[]>){
+        let data = await func;
+        let arr = [];
         if (data === undefined)
             return;
         for(let i = 0; i < data.length; i++){
-            let obj = { mainText: data[i].name, subText: '', picture: image, alt: data[i].name };
-            if (isNaN(data[i].other[0]))
-                obj.subText = `${data[i].other}`;
-            else
-                obj.subText = `${data[i].other} listeners`;
-            propsList.push(obj);
+            arr.push({key: i, mainText: data[i].name, subText: data[i].other, pic: image, picAlt: data[i].name});
         }
-        updateList();
+        return arr;
     }
 
-    /**
-     * обновляет пропсы (изображение) для карточек поиска
-     */
-    async function setPic(){
-        let pictures = await getRandomPictures(propsList.length, 200);
-        if (pictures === undefined)
+    async function setPic(arr: SearchCardValues[] | undefined) {
+        if(arr === undefined)
+            return
+        let pictures = await getRandomPictures(arr.length, 150);
+        if (pictures === undefined || arr === undefined)
             return;
-        for(let i = 0; i < propsList.length; i++){
-            propsList[i].picture = pictures[i];
+        for(let i = 0; i < arr.length; i++){
+            arr[i].pic = pictures[i];
         }
-        updateList();
     }
 
     useEffect(() => {
         async function qwe() {
-            await setSomething(func);
-            await setPic();
+            let arr = await setSomething(func);
+            if(arr !== undefined)
+                setCards(arr);
+            await setPic(arr);
+            if(arr !== undefined)
+                setCards([...arr]);
         }
         qwe();
     }, [input]);
@@ -71,7 +52,9 @@ export const SearchResult = ({input, func} : SearchResultInterface) => {
     return (
         <div className='grid-search-result'>
             {/* <!-- сюда вставляются карточки артистов --> */}
-            { cards }
+            { cards.map( a => {
+                return <SearchCard key={a.key} mainText={a.mainText} subText={a.subText} pic={a.pic} picAlt={a.picAlt}/>
+            }) }
         </div>
     )
 }
