@@ -73,10 +73,13 @@
     margin-left: 15px;
 }
 
+.header-logo-container{
+    position: absolute;
+}
+
 .header-logo {
     padding: 10px 0px;
     height: 40px;
-    position: absolute;
 }
 
 .search-field-container {

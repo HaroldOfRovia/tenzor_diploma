@@ -1,16 +1,18 @@
 import { SearchResult } from "./SearchResult"
 import { findArtist, findAlbum  } from '../../collectData';
 import { TrackSearch } from './TrackSeacrh';
+import { useParams } from "react-router-dom";
 
 export interface SearchInput {
     input: string
 }
 
 /**
- * @param интерфейс SearchInput (значение поиска)
  * @returns ReactElement страницы поиска
  */
-export const SearchPage = function ({input} : SearchInput) {
+export const SearchPage = function () {
+    const params = useParams();
+    let input = params.input as string;
 
     return( 
         <main className='search-page'>
